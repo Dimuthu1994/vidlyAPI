@@ -1,5 +1,8 @@
+const Joi = require("joi");
 const express = require("express");
 const router = express.Router();
+//express() not work so we need .Router()
+// when we seperate routes
 
 const genres = [
   { id: 1, name: "Action" },
