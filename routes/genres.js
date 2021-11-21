@@ -3,13 +3,17 @@ const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const express = require("express");
 const router = express.Router();
+const asyncMiddleware = require("../middleware/async");
 //express() not work so we need .Router()
 // when we seperate routes
 
-router.get("/", async (req, res) => {
-  const genres = await Genre.find().sort("name");
-  res.send(genres);
-});
+router.get(
+  "/",
+  asyncMiddleware(async (req, res) => {
+    const genres = await Genre.find().sort("name");
+    res.send(genres);
+  })
+);
 
 router.get("/:id", async (req, res) => {
   const genre = await Genre.findById(req.params.id);
