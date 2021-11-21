@@ -4,6 +4,7 @@ const router = express.Router();
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const Joi = require("@hapi/joi");
+const jwt = require("jsonwebtoken");
 // create authentication login
 
 router.post("/", async (req, res) => {
@@ -16,7 +17,8 @@ router.post("/", async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Invalid email or password");
 
-  res.send(true);
+  const token = jwt.sign({ _id: user._id }, "jwtPrivateKey");
+  res.send(token);
 });
 
 function validate(req) {
