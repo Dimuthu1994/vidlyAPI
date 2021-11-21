@@ -1,3 +1,4 @@
+require("express-async-errors");
 const error = require("./middleware/error");
 const genres = require("./routes/genres");
 const customers = require("./routes/customers");
