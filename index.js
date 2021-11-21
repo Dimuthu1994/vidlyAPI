@@ -15,12 +15,19 @@ const Joi = require("@hapi/joi");
 Joi.objectId = require("joi-objectid")(Joi);
 const config = require("config");
 
+process.on("uncaughtException", (ex) => {
+  console.log("WE GOT AN UNCAUGHT EXCEPTION");
+  winston.error(ex.message, ex);
+});
+
 winston.add(winston.transports.File, { filename: "logfile.log" });
 
 if (!config.get("jwtPrivateKey")) {
   console.log("FATAL ERROR:jwtPrivateKey is not defined.");
   process.exit(1);
 }
+
+throw new Error("Something faile during startup");
 
 app.use(helmet());
 app.use(express.json());
