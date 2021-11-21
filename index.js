@@ -10,6 +10,12 @@ const mongoose = require("mongoose");
 const app = express();
 const Joi = require("@hapi/joi");
 Joi.objectId = require("joi-objectid")(Joi);
+const config = require("config");
+
+if (!config.get("jwtPrivateKey")) {
+  console.log("FATAL ERROR:jwtPrivateKey is not defined.");
+  process.exit(1);
+}
 
 app.use(helmet());
 app.use(express.json());
