@@ -18,6 +18,13 @@ const config = require("config");
 process.on("uncaughtException", (ex) => {
   console.log("WE GOT AN UNCAUGHT EXCEPTION");
   winston.error(ex.message, ex);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (ex) => {
+  console.log("WE GOT AN UNHANDLED REJECTION");
+  winston.error(ex.message, ex);
+  process.exit(1);
 });
 
 winston.add(winston.transports.File, { filename: "logfile.log" });
@@ -27,7 +34,8 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-throw new Error("Something faile during startup");
+const p = Promise.reject(new Error("Something failed miserably"));
+p.then(() => console.log("Done"));
 
 app.use(helmet());
 app.use(express.json());
